@@ -57,3 +57,9 @@ google.pool.maximum.size=1
 google.pool.thread.priority=5
 
 ```
+Usage
+----------------------
+* Including a rule on a folder by selecting **google-vision-action**
+* Every dropped image on this folder will be sent to Google Vision in order to get labels as Alfresco Tags, landmark and logo as Alfresco Custom Aspect and OCR text as Alfresco Description. 
+* If a language is selected for Google Translate in **alfresco-global.properties**, labels, landmark and text is translated before including values in Alfresco. 
+* This operation is performed asynchronously, so results are not available just after uploading the image.
