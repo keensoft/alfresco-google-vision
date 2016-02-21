@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+
+
+    <bean id="google-vision-action" class="es.keensoft.alfresco.google.GoogleVisionExtractAction" parent="action-executer" init-method="init">
+        <property name="nodeService" ref="NodeService"/>
+        <property name="contentService" ref="ContentService" />
+        <property name="taggingService" ref="TaggingService" />
+    	<property name="transactionService" ref="TransactionService" />
+    	<property name="threadPoolExecutor" ref="googleActionsThreadPoolExecutor" />
+        <property name="googleVisionWorker" ref="google-vision-worker" />
+    </bean>
+    
+	<bean id="googleActionsThreadPoolExecutor" class="org.alfresco.util.ThreadPoolExecutorFactoryBean">
+        <property name="poolName" value="googleVisionActionsThreadPool" />
+        <property name="corePoolSize" value="${google.pool.core.size}" />
+        <property name="maximumPoolSize" value="${google.pool.maximum.size}" />
+        <property name="threadPriority" value="${google.pool.thread.priority}" />
+    </bean>
+
+	<bean id="google-vision-worker" class="es.keensoft.alfresco.google.GoogleVisionWorker">
+	    <property name="applicationName" value="${google.vision.application.name}" />
+	    <property name="credentialsJsonPath" value="${google.vision.credentials.json}" />
+	    <property name="maxResults" value="${google.vision.max.results}" />
+	    <property name="translateLanguage" value="${google.translate.language}" />
+	    <property name="translateApiKey" value="${google.translate.api.key}" />
+	</bean>
+
+</beans>
