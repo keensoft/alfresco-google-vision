@@ -108,7 +108,7 @@ public class GoogleVisionExtractAction extends ActionExecuterAbstractBase {
                     	    }
                     	    
                     	    // Text
-                    	    if (!gvBean.getText().isEmpty()) {
+                    	    if (gvBean.getText() != null && !gvBean.getText().isEmpty()) {
                         	    String description = "google vision:";
 	                    	    for (String text : gvBean.getText()) {
 	                    	    	description = description + " " + text;
