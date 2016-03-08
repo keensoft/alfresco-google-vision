@@ -15,6 +15,7 @@ Current addon release 1.0.0 is ***BETA***
 
 **Compatibility**
 The current version has been developed using Alfresco 5.1 and Alfresco SDK 2.1, although it should run in Alfresco 5.0.d and Alfresco 5.0.c
+
 Browser compatibility: 100% supported
 
 **Languages**
@@ -63,3 +64,16 @@ Usage
 * Every dropped image on this folder will be sent to Google Vision in order to get labels as Alfresco Tags, landmark and logo as Alfresco Custom Aspect and OCR text as Alfresco Description. 
 * If a language is selected for Google Translate in **alfresco-global.properties**, labels, landmark and text is translated before including values in Alfresco. 
 * This operation is performed asynchronously, so results are not available just after uploading the image.
+
+Todos
+----------------------
+Following features should be included:
+* Provide user share interface for Google Vision aspect (logo and landmark)
+* Provide a new Share action with params:
+** Number of results
+** Language selection
+** Detecting explicit content
+** Detecting OCR
+** Retrieving image attributes
+** Face detection
+* Develop a repo Service for Google Vision
