@@ -68,12 +68,13 @@ Usage
 Todos
 ----------------------
 Following features should be included:
+* Make releases compatible with Alfresco SDK 2.1.1 (Alfresco 5.0.d) and Alfresco SDK 2.2.0 (Alfresco 5.1.e)
 * Provide user share interface for Google Vision aspect (logo and landmark)
 * Provide a new Share action with params:
-** Number of results
-** Language selection
-** Detecting explicit content
-** Detecting OCR
-** Retrieving image attributes
-** Face detection
+ * Number of results
+ * Language selection
+ * Detecting explicit content
+ * Detecting OCR
+ * Retrieving image attributes
+ * Face detection
 * Develop a repo Service for Google Vision
