@@ -26,6 +26,32 @@
 	    <property name="maxResults" value="${google.vision.max.results}" />
 	    <property name="translateLanguage" value="${google.translate.language}" />
 	    <property name="translateApiKey" value="${google.translate.api.key}" />
+	    <property name="safeSearchConfig" ref="safe-search-config" />
 	</bean>
+	
+	<bean id="safe-search-config" class="es.keensoft.alfresco.google.SafeSearchConfig">
+	    <property name="adultLikelihoodLevel" value="${google.safe.search.adult}" />
+	    <property name="medicalLikelihoodLevel" value="${google.safe.search.medical}" />
+	    <property name="spoofLikelihoodLevel" value="${google.safe.search.spoof}" />
+	    <property name="violenceLikelihoodLevel" value="${google.safe.search.violence}" />
+	</bean>
+	
+	<bean id="inappropriateContentFirewall" 
+	      class="es.keensoft.alfresco.google.behaviour.InappropriateContentFirewall"
+	      init-method="init">
+    	<property name="policyComponent" ref="policyComponent"/>
+	    <property name="nodeService" ref="NodeService" />
+        <property name="contentService" ref="ContentService" />
+        <property name="googleVisionWorker" ref="google-vision-worker" />
+	</bean>
+	
+	<bean id="google-vision-repo_ResourceBundles" class="org.alfresco.i18n.ResourceBundleBootstrapComponent">
+      <property name="resourceBundles">
+         <list>
+    	    <value>alfresco.module.${project.artifactId}.messages.repo</value>
+    	 </list>
+      </property>
+   	</bean>
+	
 
 </beans>

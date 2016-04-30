@@ -24,6 +24,8 @@ import com.google.api.services.vision.v1.model.Image;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 
+import es.keensoft.alfresco.google.SafeSearchConfig.Likelihood;
+
 public class GoogleVisionWorker {
 	
     private String applicationName;
@@ -31,7 +33,7 @@ public class GoogleVisionWorker {
     private Integer maxResults;
     private String translateLanguage;
     private String translateApiKey;
-    
+    private SafeSearchConfig safeSearchConfig;
 	
     public GoogleVisionBean execute(ContentReader reader) throws Exception {
     	
@@ -110,6 +112,51 @@ public class GoogleVisionWorker {
                 .setApplicationName(applicationName)
                 .build();
     }
+    
+    public Boolean isInappropriateContent(byte[] data) throws Exception {
+    	
+    	if (safeSearchConfig.getEnabled()) {
+    	
+	    	Vision vision = getVisionService();
+	        AnnotateImageRequest request =
+	                new AnnotateImageRequest()
+	                    .setImage(new Image().encodeContent(data))
+	                    .setFeatures(ImmutableList.of(
+	                            new Feature()
+	                            .setType("SAFE_SEARCH_DETECTION")));
+	
+	        Vision.Images.Annotate annotate = vision.images().annotate(
+	        		new BatchAnnotateImagesRequest().setRequests(ImmutableList.of(request)));
+	        annotate.setDisableGZipContent(true);
+	        
+	        BatchAnnotateImagesResponse response = annotate.execute();
+	        
+	        if (response.getResponses().get(0).getSafeSearchAnnotation() != null) {
+	        	if (safeSearchConfig.getAdultLikelihoodLevel() != null) {
+	        		Likelihood l1 = Likelihood.valueOf(response.getResponses().get(0).getSafeSearchAnnotation().getAdult());
+	        		return Likelihood.isLikelyOrBetter(l1, safeSearchConfig.getAdultLikelihoodLevel());
+	        	}
+	        	if (safeSearchConfig.getMedicalLikelihoodLevel() != null) {
+	        		Likelihood l1 = Likelihood.valueOf(response.getResponses().get(0).getSafeSearchAnnotation().getMedical());
+	        		return Likelihood.isLikelyOrBetter(l1, safeSearchConfig.getMedicalLikelihoodLevel());
+	        	}
+	        	if (safeSearchConfig.getSpoofLikelihoodLevel() != null) {
+	        		Likelihood l1 = Likelihood.valueOf(response.getResponses().get(0).getSafeSearchAnnotation().getSpoof());
+	        		return Likelihood.isLikelyOrBetter(l1, safeSearchConfig.getSpoofLikelihoodLevel());
+	        	}
+	        	if (safeSearchConfig.getViolenceLikelihoodLevel() != null) {
+	        		Likelihood l1 = Likelihood.valueOf(response.getResponses().get(0).getSafeSearchAnnotation().getViolence());
+	        		return Likelihood.isLikelyOrBetter(l1, safeSearchConfig.getViolenceLikelihoodLevel());
+	        	}
+	        	return true;
+	        }
+    	}
+        
+        return false;
+    	
+    }
+    
+    
     
     public GoogleVisionBean searchData(byte[] data) throws Exception {
     	
@@ -192,6 +239,14 @@ public class GoogleVisionWorker {
 
 	public void setTranslateApiKey(String translateApiKey) {
 		this.translateApiKey = translateApiKey;
+	}
+
+	public void setSafeSearchConfig(SafeSearchConfig safeSearchConfig) {
+		this.safeSearchConfig = safeSearchConfig;
+	}
+	
+	public SafeSearchConfig getSafeSearchConfig() {
+		return safeSearchConfig;
 	}
 
 }
