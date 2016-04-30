@@ -1,0 +1,29 @@
+<alfresco-config>
+
+    <config evaluator="aspect" condition="gvis:googleVision">
+        <forms>
+            <form>
+                <field-visibility>
+                    <show id="gvis:logo" />
+                    <show id="gvis:landmark" />
+                </field-visibility>
+                <appearance>
+                    <field id="gvis:logo" />
+                    <field id="gvis:landmark" />
+                </appearance>
+            </form>
+	        <form id="doclib-simple-metadata">
+                <field-visibility>
+                    <show id="gvis:logo" />
+                    <show id="gvis:landmark" />
+                </field-visibility>
+                <appearance>
+                    <field id="gvis:logo" />
+                    <field id="gvis:landmark" />
+                </appearance>
+	            <edit-form template="../documentlibrary/forms/doclib-simple-metadata.ftl" />
+	         </form>
+        </forms>
+    </config>
+
+</alfresco-config>
