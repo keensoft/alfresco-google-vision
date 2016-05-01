@@ -80,6 +80,8 @@ Todos
 ----------------------
 Including missing functionalities from [Google Vision API](https://cloud.google.com/vision/reference/rest/v1/images/annotate)
 
+Build a new metadata extractor including Google Vision labels (idea provided by *Ray Gauss*)
+
 Following features should be also included:
 
 * Provide a new Share action with params:
